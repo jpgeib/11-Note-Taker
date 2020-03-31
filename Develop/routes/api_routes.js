@@ -31,13 +31,16 @@ module.exports = function (app) {
         console.log("Deleting a note");
         fs.readFile("./db/db.json", "utf8", (err, response) => {
             //convert the response to JSON
+            if (err) throw err;
             let allNotes = JSON.parse(response);
-            const deletedNote = allNotes.filter(note => {
+            console.log(allNotes);
+            const filteredNotes = allNotes.filter(note => {
                 note.id != req.params.id;
             });
-            fs.writeFile("./db/db.json", JSON.stringify(deletedNote), err => {
+            fs.writeFile("./db/db.json", JSON.stringify(filteredNotes, null, 2), err => {
                 if (err) throw res.status(500).json(err);
-                res.json(deletedNote);
+                res.json(filteredNotes);
+                console.log("Note deleted!", req.params.id);
             });
         });
     });
