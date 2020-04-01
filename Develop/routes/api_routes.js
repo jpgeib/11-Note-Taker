@@ -16,8 +16,12 @@ module.exports = function (app) {
             //convert the response to JSON
             let allNotes = JSON.parse(response);
             console.log("Adding a note", allNotes);
-            var lastID = allNotes[allNotes.length - 1].id;
-            lastID = lastID + 1;
+            if(allNotes.length > 0) {
+                var lastID = allNotes[allNotes.length - 1].id;
+                lastID = lastID + 1;
+            } else {
+                var lastID = "1"
+            }
             const newNote = {...req.body, id: lastID};
             allNotes = [...allNotes, newNote];
             console.log(allNotes);
