@@ -16,7 +16,9 @@ module.exports = function (app) {
             //convert the response to JSON
             let allNotes = JSON.parse(response);
             console.log("Adding a note", allNotes);
-            const newNote = req.body;
+            var lastID = allNotes[allNotes.length - 1].id;
+            lastID = lastID + 1;
+            const newNote = {...req.body, id: lastID};
             allNotes = [...allNotes, newNote];
             console.log(allNotes);
             // notesDB.push(newNote);
@@ -34,9 +36,7 @@ module.exports = function (app) {
             if (err) throw err;
             let allNotes = JSON.parse(response);
             console.log(allNotes);
-            const filteredNotes = allNotes.filter(note => {
-                note.id != req.params.id;
-            });
+            const filteredNotes = allNotes.filter(note => note.id != req.params.id);
             fs.writeFile("./db/db.json", JSON.stringify(filteredNotes, null, 2), err => {
                 if (err) throw res.status(500).json(err);
                 res.json(filteredNotes);
