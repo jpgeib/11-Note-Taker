@@ -28,7 +28,7 @@ module.exports = function (app) {
             // notesDB.push(newNote);
             fs.writeFile("./db/db.json", JSON.stringify(allNotes), err => {
                 if (err) throw res.status(500).json(err);
-                res.json();
+                res.json(newNote);
             });
         });
     });
